@@ -1,94 +1,94 @@
-<!-- Zorganizowani.pl - Strona Główna (HTML + TailwindCSS szkielet) -->
 <!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zorganizowani.pl - Ogarnij dom i finanse</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zorganizowani – Produkty do pobrania</title>
   <style>
-    body { font-family: 'Inter', sans-serif; }
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 20px auto;
+      padding: 0 15px;
+      line-height: 1.5;
+      color: #333;
+    }
+    h1, h2, h3 {
+      color: #2c3e50;
+    }
+    a {
+      color: #2980b9;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .product {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+      background-color: #f9f9f9;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    button {
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      margin-top: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background-color: #1c5980;
+    }
   </style>
 </head>
-<body class="bg-white text-gray-800">
+<body>
+  <h1>Zorganizowani – Produkty do pobrania</h1>
+  
+  <p>
+    <a href="#planer-posilkow">Planer Posiłków Tygodniowy jadłospis + lista zakupów. Minimalistyczny PDF do druku.</a>
+  </p>
+  
+  <article class="product" id="planer-posilkow">
+    <h3>📅 Tygodniowy Planer Posiłków + Lista Zakupów (PDF)</h3>
+    <p>Planuj jedzenie, oszczędzaj czas i pieniądze!</p>
+    <ul>
+      <li>Wersja do druku PDF</li>
+      <li>Bonus: lista zakupów podzielona na kategorie</li>
+      <li>✔️ Idealny do lodówki lub planowania na telefonie</li>
+      <li>✅ Cena: 19 zł</li>
+    </ul>
+    <button onclick="window.open('downloads/planer-posilkow-pusta.pdf', '_blank')">Pobierz wersję pustą</button>
+    <button onclick="window.open('downloads/planer-posilkow-przykladowy.pdf', '_blank')">Pobierz wersję przykładową</button>
+  </article>
 
-  <!-- Header -->
-  <header class="bg-green-600 text-white py-6">
-    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between">
-      <h1 class="text-2xl font-bold">Zorganizowani.pl</h1>
-      <nav class="space-x-6">
-        <a href="#produkty" class="hover:underline">Produkty</a>
-        <a href="#blog" class="hover:underline">Blog</a>
-        <a href="#kontakt" class="hover:underline">Kontakt</a>
-      </nav>
-    </div>
-  </header>
+  <article class="product" id="budzet-domowy">
+    <h3>💰 Budżet Domowy – Excel</h3>
+    <p>Najprostszy sposób na kontrolę nad wydatkami.</p>
+    <ul>
+      <li>Gotowy szablon do uzupełniania</li>
+      <li>Automatyczne sumy i wykres</li>
+      <li>Wersja miesięczna + roczna</li>
+      <li>✅ Cena: 29 zł</li>
+    </ul>
+    <button onclick="window.open('downloads/budzet-domowy.xlsx', '_blank')">Pobierz szablon Excel</button>
+  </article>
 
-  <!-- Hero section -->
-  <section class="bg-gray-100 py-20 text-center">
-    <div class="max-w-2xl mx-auto">
-      <h2 class="text-4xl font-bold mb-4">Ogarnij dom i finanse z gotowymi planerami</h2>
-      <p class="text-lg mb-6">Pobierz planery, organizery i budżet domowy. Wersja do druku lub Excel. Prosto, estetycznie i skutecznie.</p>
-      <a href="#produkty" class="bg-green-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-700">Zobacz produkty</a>
-    </div>
-  </section>
-
-  <!-- Produkty -->
-  <section id="produkty" class="py-20">
-    <div class="max-w-6xl mx-auto px-4">
-      <h3 class="text-3xl font-semibold text-center mb-12">Nasze planery</h3>
-      <div class="grid md:grid-cols-3 gap-8">
-
-        <!-- Produkt 1 -->
-        <div class="border p-6 rounded-2xl shadow-sm bg-white">
-          <h4 class="text-xl font-bold mb-2">Planer Posiłków</h4>
-          <p class="mb-4">Tygodniowy jadłospis + lista zakupów. Minimalistyczny PDF do druku.</p>
-          <span class="font-semibold block mb-4">19 zł</span>
-          <a href="#" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Kup teraz</a>
-        </div>
-
-        <!-- Produkt 2 -->
-        <div class="border p-6 rounded-2xl shadow-sm bg-white">
-          <h4 class="text-xl font-bold mb-2">Budżet Domowy Excel</h4>
-          <p class="mb-4">Prosty arkusz z automatycznymi obliczeniami. Miesięczny i roczny widok.</p>
-          <span class="font-semibold block mb-4">29 zł</span>
-          <a href="#" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Kup teraz</a>
-        </div>
-
-        <!-- Produkt 3 -->
-        <div class="border p-6 rounded-2xl shadow-sm bg-white">
-          <h4 class="text-xl font-bold mb-2">Zestaw Planerów</h4>
-          <p class="mb-4">5 plików PDF: zadania, zakupy, tydzień, sprzątanie, notatki. Pakiet!</p>
-          <span class="font-semibold block mb-4">39 zł</span>
-          <a href="#" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Kup teraz</a>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Blog i kontakt -->
-  <section id="blog" class="bg-gray-50 py-20">
-    <div class="max-w-4xl mx-auto text-center px-4">
-      <h3 class="text-2xl font-bold mb-4">Zajrzyj na bloga</h3>
-      <p class="mb-6">Dowiedz się jak lepiej planować, oszczędzać i organizować codzienność.</p>
-      <a href="#" class="text-green-700 font-semibold hover:underline">Przejdź do bloga</a>
-    </div>
-  </section>
-
-  <section id="kontakt" class="py-20">
-    <div class="max-w-3xl mx-auto text-center px-4">
-      <h3 class="text-2xl font-bold mb-4">Masz pytania?</h3>
-      <p class="mb-6">Napisz do nas na kontakt@zorganizowani.pl lub przez formularz kontaktowy.</p>
-      <a href="#" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">Skontaktuj się</a>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="bg-gray-800 text-white text-center py-6">
-    <p>&copy; 2025 Zorganizowani.pl. Wszelkie prawa zastrzeżone.</p>
-  </footer>
-
+  <article class="product" id="zestaw-zorganizowanych">
+    <h3>✅ Zestaw Zorganizowanych – 5 planerów w 1</h3>
+    <p>Wszystko, czego potrzebujesz, by ogarnąć dom i codzienność!</p>
+    <ul>
+      <li>Tygodniowy plan, lista zadań, zakupy, sprzątanie</li>
+      <li>Minimalistyczny PDF do druku</li>
+      <li>✅ Cena: 39 zł</li>
+    </ul>
+    <button onclick="window.open('downloads/zestaw-zorganizowanych.pdf', '_blank')">Pobierz zestaw</button>
+  </article>
 </body>
 </html>
