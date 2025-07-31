@@ -7,93 +7,147 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #e0e7ff;
+      font-family: 'Segoe UI', sans-serif;
+      transition: background 0.5s, color 0.5s;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+    a {
+      color: #60a5fa;
+    }
+    a:hover {
+      color: #3b82f6;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans">
-  <header class="bg-white shadow p-6 text-center">
-    <h1 class="text-3xl font-bold">Zorganizowani</h1>
-    <p class="text-sm mt-2 text-gray-500">Twoje centrum planowania życia i finansów</p>
+<body class="font-sans">
+  <header class="glass text-center max-w-4xl mx-auto mt-6">
+    <h1 class="text-4xl font-extrabold mb-2">Zorganizowani 🚀</h1>
+    <p class="text-blue-300">Twoje centrum planowania życia i finansów</p>
   </header>
 
   <main class="p-6 max-w-4xl mx-auto">
     <!-- Sekcja Planer Posiłków -->
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-4">🍽️ Kreator Jadłospisu</h2>
+    <section class="glass mb-12">
+      <h2 class="text-2xl font-bold mb-4">🍽️ Kreator Jadłospisu + AI Sugestie</h2>
       <p class="mb-2">Wybierz posiłki, a wygenerujemy jadłospis i listę zakupów + policzymy kalorie!</p>
-      <div class="grid md:grid-cols-3 gap-4">
-        <button onclick="addMeal('Kurczak w curry', 520, 'https://kuchnia.example.com/kurczak-curry')" class="bg-blue-100 p-4 rounded-xl shadow hover:bg-blue-200">Kurczak w curry</button>
-        <button onclick="addMeal('Owsianka z owocami', 320, 'https://kuchnia.example.com/owsianka')" class="bg-blue-100 p-4 rounded-xl shadow hover:bg-blue-200">Owsianka z owocami</button>
-        <button onclick="addMeal('Sałatka z tuńczykiem', 410, 'https://kuchnia.example.com/salatka-tunczyk')" class="bg-blue-100 p-4 rounded-xl shadow hover:bg-blue-200">Sałatka z tuńczykiem</button>
-      </div>
-      <div class="mt-6">
+      <div class="grid md:grid-cols-3 gap-4 mb-4" id="meal-buttons"></div>
+      <button id="suggestMeal" class="bg-purple-600 text-white px-4 py-2 rounded mb-4 hover:bg-purple-700">💡 Sugestia AI (losowy posiłek)</button>
+      <div>
         <h3 class="text-xl font-semibold">📋 Twój Jadłospis:</h3>
         <ul id="mealList" class="list-disc pl-6"></ul>
         <p class="mt-2">🔢 Kalorie łącznie: <span id="calorieCount" class="font-bold">0</span> kcal</p>
+        <button id="clearMeals" class="mt-2 bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">Wyczyść jadłospis</button>
       </div>
     </section>
 
     <!-- Sekcja Budżet -->
-    <section class="mb-12">
+    <section class="glass mb-12">
       <h2 class="text-2xl font-bold mb-4">💰 Twój Budżet Domowy</h2>
       <form id="budgetForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <input type="text" placeholder="Nazwa" id="category" class="p-2 border rounded" required>
-        <input type="number" placeholder="Kwota" id="amount" class="p-2 border rounded" required>
+        <input type="text" placeholder="Nazwa" id="category" class="p-2 border rounded text-black" required>
+        <input type="number" placeholder="Kwota" id="amount" class="p-2 border rounded text-black" required>
         <button type="submit" class="col-span-2 bg-green-500 text-white py-2 rounded hover:bg-green-600">Dodaj wydatek</button>
       </form>
       <canvas id="budgetChart" width="400" height="200"></canvas>
+      <button id="clearBudget" class="mt-2 bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">Wyczyść budżet</button>
     </section>
 
     <!-- Sekcja Plików do Pobrania -->
-    <section>
+    <section class="glass">
       <h2 class="text-2xl font-bold mb-4">📦 Pliki do Pobrania</h2>
       <ul class="space-y-2">
-        <li>
-          📄 <strong>Planer Posiłków – pusta wersja:</strong>
-          <a href="downloads/planer-posilkow-pusta.pdf" class="text-blue-600 underline">Pobierz PDF</a>
-        </li>
-        <li>
-          📄 <strong>Planer Posiłków – przykładowy jadłospis:</strong>
-          <a href="downloads/planer-posilkow-przykladowy.pdf" class="text-blue-600 underline">Pobierz PDF</a>
-        </li>
-        <li>
-          📊 <strong>Budżet domowy Excel:</strong>
-          <a href="downloads/budzet-domowy.xlsx" class="text-blue-600 underline">Pobierz XLSX</a>
-        </li>
-        <li>
-          📄 <strong>Zestaw Zorganizowanych – 5 plannerów:</strong>
-          <a href="downloads/zestaw-zorganizowanych.pdf" class="text-blue-600 underline">Pobierz PDF</a>
-        </li>
+        <li>📄 <strong>Planer Posiłków – pusta wersja:</strong> <a href="downloads/planer-posilkow-pusta.pdf" download>Pobierz PDF</a></li>
+        <li>📄 <strong>Planer Posiłków – przykładowy jadłospis:</strong> <a href="downloads/planer-posilkow-przykladowy.pdf" download>Pobierz PDF</a></li>
+        <li>📊 <strong>Budżet domowy Excel:</strong> <a href="downloads/budzet-domowy.xlsx" download>Pobierz XLSX</a></li>
+        <li>📄 <strong>Zestaw Zorganizowanych – 5 plannerów:</strong> <a href="downloads/zestaw-zorganizowanych.pdf" download>Pobierz PDF</a></li>
       </ul>
     </section>
   </main>
 
   <script>
+    const meals = [
+      { name: "Kurczak w curry", kcal: 520, link: "https://kuchnia.example.com/kurczak-curry" },
+      { name: "Owsianka z owocami", kcal: 320, link: "https://kuchnia.example.com/owsianka" },
+      { name: "Sałatka z tuńczykiem", kcal: 410, link: "https://kuchnia.example.com/salatka-tunczyk" },
+      { name: "Makaron z pesto", kcal: 600, link: "https://kuchnia.example.com/makaron-pesto" },
+      { name: "Zupa krem z dyni", kcal: 180, link: "https://kuchnia.example.com/zupa-dyni" },
+      { name: "Smoothie zielone", kcal: 250, link: "https://kuchnia.example.com/smoothie-zielone" },
+    ];
+
     let totalCalories = 0;
     const mealList = document.getElementById('mealList');
     const calorieCount = document.getElementById('calorieCount');
+    const mealButtons = document.getElementById('meal-buttons');
+    const suggestBtn = document.getElementById('suggestMeal');
+    const clearBtn = document.getElementById('clearMeals');
 
-    function addMeal(name, kcal, link) {
+    function renderMeals() {
+      meals.forEach(meal => {
+        const btn = document.createElement('button');
+        btn.className = "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600";
+        btn.innerText = meal.name;
+        btn.onclick = () => addMeal(meal);
+        mealButtons.appendChild(btn);
+      });
+    }
+
+    function addMeal(meal) {
       const li = document.createElement('li');
-      li.innerHTML = `<a href="${link}" target="_blank" class="text-blue-600 underline">${name}</a> – ${kcal} kcal`;
+      li.innerHTML = `<a href="${meal.link}" target="_blank">${meal.name}</a> – ${meal.kcal} kcal`;
       mealList.appendChild(li);
-      totalCalories += kcal;
+      totalCalories += meal.kcal;
+      calorieCount.textContent = totalCalories;
+      localStorage.setItem('meals', mealList.innerHTML);
+      localStorage.setItem('kcal', totalCalories);
+    }
+
+    suggestBtn.onclick = () => {
+      const randomMeal = meals[Math.floor(Math.random() * meals.length)];
+      addMeal(randomMeal);
+    }
+
+    clearBtn.onclick = () => {
+      mealList.innerHTML = '';
+      totalCalories = 0;
+      calorieCount.textContent = '0';
+      localStorage.removeItem('meals');
+      localStorage.removeItem('kcal');
+    }
+
+    if (localStorage.getItem('meals')) {
+      mealList.innerHTML = localStorage.getItem('meals');
+      totalCalories = parseInt(localStorage.getItem('kcal')) || 0;
       calorieCount.textContent = totalCalories;
     }
 
-    // Budżet – dane i wykres
+    renderMeals();
+
+    // Budżet
     const form = document.getElementById('budgetForm');
     const ctx = document.getElementById('budgetChart').getContext('2d');
-    const data = {
-      labels: [],
-      datasets: [{
-        label: 'Wydatki',
-        data: [],
-        backgroundColor: 'rgba(59, 130, 246, 0.5)',
-        borderWidth: 1
-      }]
-    };
+    let data = JSON.parse(localStorage.getItem('budgetData')) || { labels: [], data: [] };
+
     const chart = new Chart(ctx, {
       type: 'bar',
-      data: data,
+      data: {
+        labels: data.labels,
+        datasets: [{
+          label: 'Wydatki',
+          data: data.data,
+          backgroundColor: 'rgba(59, 130, 246, 0.5)',
+          borderWidth: 1
+        }]
+      },
       options: { responsive: true, scales: { y: { beginAtZero: true } } }
     });
 
@@ -102,10 +156,16 @@
       const category = document.getElementById('category').value;
       const amount = parseFloat(document.getElementById('amount').value);
       data.labels.push(category);
-      data.datasets[0].data.push(amount);
+      data.data.push(amount);
       chart.update();
       form.reset();
+      localStorage.setItem('budgetData', JSON.stringify(data));
     });
+
+    document.getElementById('clearBudget').onclick = () => {
+      localStorage.removeItem('budgetData');
+      location.reload();
+    }
   </script>
 </body>
 </html>
