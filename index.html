@@ -2,98 +2,110 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Zorganizowani – Produkty do pobrania</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 700px;
-      margin: 20px auto;
-      padding: 0 15px;
-      line-height: 1.5;
-      color: #333;
-    }
-    h1, h2, h3 {
-      color: #2c3e50;
-    }
-    a {
-      color: #2980b9;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    .product {
-      border: 1px solid #ddd;
-      padding: 15px;
-      margin: 20px 0;
-      border-radius: 6px;
-      background-color: #f9f9f9;
-    }
-    ul {
-      padding-left: 20px;
-    }
-    button {
-      background-color: #2980b9;
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      margin-top: 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    button:hover {
-      background-color: #1c5980;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zorganizowani – Planowanie i Budżet</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-  <h1>Zorganizowani – Produkty do pobrania</h1>
+<body class="bg-gray-100 text-gray-800 font-sans">
+  <header class="bg-white shadow p-6 text-center">
+    <h1 class="text-3xl font-bold">Zorganizowani</h1>
+    <p class="text-sm mt-2 text-gray-500">Twoje centrum planowania życia i finansów</p>
+  </header>
 
-  <article class="product">
-    <h3>📅 Tygodniowy Planer Posiłków + Lista Zakupów (PDF)</h3>
-    <p>Planuj jedzenie, oszczędzaj czas i pieniądze!</p>
-    <p><strong>Zawartość PDF:</strong></p>
-    <ul>
-      <li>Plan posiłków od poniedziałku do niedzieli (3 posiłki dziennie)</li>
-      <li>Wersja pusta (do wypełniania) i wersja przykładowa (z gotowym jadłospisem)</li>
-      <li>Lista zakupów podzielona na kategorie: warzywa, nabiał, mięso, inne</li>
-      <li>✔️ Idealny do lodówki lub planowania na telefonie</li>
-      <li>✅ Cena: 19 zł</li>
-    </ul>
-    <button onclick="window.open('downloads/planer-posilkow-pusta.pdf', '_blank')">Pobierz wersję pustą</button>
-    <button onclick="window.open('downloads/planer-posilkow-przykladowy.pdf', '_blank')">Pobierz wersję przykładową</button>
-  </article>
+  <main class="p-6 max-w-4xl mx-auto">
+    <!-- Sekcja Planer Posiłków -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">🍽️ Kreator Jadłospisu</h2>
+      <p class="mb-2">Wybierz posiłki, a wygenerujemy jadłospis i listę zakupów + policzymy kalorie!</p>
+      <div class="grid md:grid-cols-3 gap-4">
+        <button onclick="addMeal('Kurczak w curry', 520, 'https://kuchnia.example.com/kurczak-curry')" class="bg-blue-100 p-4 rounded-xl shadow hover:bg-blue-200">Kurczak w curry</button>
+        <button onclick="addMeal('Owsianka z owocami', 320, 'https://kuchnia.example.com/owsianka')" class="bg-blue-100 p-4 rounded-xl shadow hover:bg-blue-200">Owsianka z owocami</button>
+        <button onclick="addMeal('Sałatka z tuńczykiem', 410, 'https://kuchnia.example.com/salatka-tunczyk')" class="bg-blue-100 p-4 rounded-xl shadow hover:bg-blue-200">Sałatka z tuńczykiem</button>
+      </div>
+      <div class="mt-6">
+        <h3 class="text-xl font-semibold">📋 Twój Jadłospis:</h3>
+        <ul id="mealList" class="list-disc pl-6"></ul>
+        <p class="mt-2">🔢 Kalorie łącznie: <span id="calorieCount" class="font-bold">0</span> kcal</p>
+      </div>
+    </section>
 
-  <article class="product">
-    <h3>💰 Budżet Domowy – Excel</h3>
-    <p>Najprostszy sposób na kontrolę nad wydatkami.</p>
-    <p><strong>Zawartość Excela:</strong></p>
-    <ul>
-      <li>Kategorie wydatków i przychodów</li>
-      <li>Miesięczne i roczne podsumowanie</li>
-      <li>Automatyczne sumowanie i podświetlenie przekroczeń budżetu</li>
-      <li>Wbudowany prosty wykres (np. kołowy udział wydatków)</li>
-      <li>✅ Cena: 29 zł</li>
-    </ul>
-    <button onclick="window.open('downloads/budzet-domowy.xlsx', '_blank')">Pobierz szablon Excel</button>
-  </article>
+    <!-- Sekcja Budżet -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">💰 Twój Budżet Domowy</h2>
+      <form id="budgetForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <input type="text" placeholder="Nazwa" id="category" class="p-2 border rounded" required>
+        <input type="number" placeholder="Kwota" id="amount" class="p-2 border rounded" required>
+        <button type="submit" class="col-span-2 bg-green-500 text-white py-2 rounded hover:bg-green-600">Dodaj wydatek</button>
+      </form>
+      <canvas id="budgetChart" width="400" height="200"></canvas>
+    </section>
 
-  <article class="product">
-    <h3>✅ Zestaw Zorganizowanych – 5 plannerów w 1</h3>
-    <p>Wszystko, czego potrzebujesz, by ogarnąć dom i codzienność!</p>
-    <p><strong>Zawartość zestawu (PDF):</strong></p>
-    <ul>
-      <li>Tygodniowy plan dnia</li>
-      <li>Lista zadań</li>
-      <li>Planer sprzątania</li>
-      <li>Lista zakupów</li>
-      <li>Miejsce na notatki</li>
-      <li>Design minimalistyczny (czysty i estetyczny, gotowy do druku)</li>
-      <li>✅ Cena: 39 zł</li>
-    </ul>
-    <button onclick="window.open('downloads/zestaw-zorganizowanych.pdf', '_blank')">Pobierz zestaw</button>
-  </article>
+    <!-- Sekcja Plików do Pobrania -->
+    <section>
+      <h2 class="text-2xl font-bold mb-4">📦 Pliki do Pobrania</h2>
+      <ul class="space-y-2">
+        <li>
+          📄 <strong>Planer Posiłków – pusta wersja:</strong>
+          <a href="downloads/planer-posilkow-pusta.pdf" class="text-blue-600 underline">Pobierz PDF</a>
+        </li>
+        <li>
+          📄 <strong>Planer Posiłków – przykładowy jadłospis:</strong>
+          <a href="downloads/planer-posilkow-przykladowy.pdf" class="text-blue-600 underline">Pobierz PDF</a>
+        </li>
+        <li>
+          📊 <strong>Budżet domowy Excel:</strong>
+          <a href="downloads/budzet-domowy.xlsx" class="text-blue-600 underline">Pobierz XLSX</a>
+        </li>
+        <li>
+          📄 <strong>Zestaw Zorganizowanych – 5 plannerów:</strong>
+          <a href="downloads/zestaw-zorganizowanych.pdf" class="text-blue-600 underline">Pobierz PDF</a>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    let totalCalories = 0;
+    const mealList = document.getElementById('mealList');
+    const calorieCount = document.getElementById('calorieCount');
+
+    function addMeal(name, kcal, link) {
+      const li = document.createElement('li');
+      li.innerHTML = `<a href="${link}" target="_blank" class="text-blue-600 underline">${name}</a> – ${kcal} kcal`;
+      mealList.appendChild(li);
+      totalCalories += kcal;
+      calorieCount.textContent = totalCalories;
+    }
+
+    // Budżet – dane i wykres
+    const form = document.getElementById('budgetForm');
+    const ctx = document.getElementById('budgetChart').getContext('2d');
+    const data = {
+      labels: [],
+      datasets: [{
+        label: 'Wydatki',
+        data: [],
+        backgroundColor: 'rgba(59, 130, 246, 0.5)',
+        borderWidth: 1
+      }]
+    };
+    const chart = new Chart(ctx, {
+      type: 'bar',
+      data: data,
+      options: { responsive: true, scales: { y: { beginAtZero: true } } }
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const category = document.getElementById('category').value;
+      const amount = parseFloat(document.getElementById('amount').value);
+      data.labels.push(category);
+      data.datasets[0].data.push(amount);
+      chart.update();
+      form.reset();
+    });
+  </script>
 </body>
 </html>
