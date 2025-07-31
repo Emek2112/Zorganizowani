@@ -1,0 +1,94 @@
+<!-- Zorganizowani.pl - Strona Główna (HTML + TailwindCSS szkielet) -->
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zorganizowani.pl - Ogarnij dom i finanse</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-white text-gray-800">
+
+  <!-- Header -->
+  <header class="bg-green-600 text-white py-6">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between">
+      <h1 class="text-2xl font-bold">Zorganizowani.pl</h1>
+      <nav class="space-x-6">
+        <a href="#produkty" class="hover:underline">Produkty</a>
+        <a href="#blog" class="hover:underline">Blog</a>
+        <a href="#kontakt" class="hover:underline">Kontakt</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero section -->
+  <section class="bg-gray-100 py-20 text-center">
+    <div class="max-w-2xl mx-auto">
+      <h2 class="text-4xl font-bold mb-4">Ogarnij dom i finanse z gotowymi planerami</h2>
+      <p class="text-lg mb-6">Pobierz planery, organizery i budżet domowy. Wersja do druku lub Excel. Prosto, estetycznie i skutecznie.</p>
+      <a href="#produkty" class="bg-green-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-700">Zobacz produkty</a>
+    </div>
+  </section>
+
+  <!-- Produkty -->
+  <section id="produkty" class="py-20">
+    <div class="max-w-6xl mx-auto px-4">
+      <h3 class="text-3xl font-semibold text-center mb-12">Nasze planery</h3>
+      <div class="grid md:grid-cols-3 gap-8">
+
+        <!-- Produkt 1 -->
+        <div class="border p-6 rounded-2xl shadow-sm bg-white">
+          <h4 class="text-xl font-bold mb-2">Planer Posiłków</h4>
+          <p class="mb-4">Tygodniowy jadłospis + lista zakupów. Minimalistyczny PDF do druku.</p>
+          <span class="font-semibold block mb-4">19 zł</span>
+          <a href="#" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Kup teraz</a>
+        </div>
+
+        <!-- Produkt 2 -->
+        <div class="border p-6 rounded-2xl shadow-sm bg-white">
+          <h4 class="text-xl font-bold mb-2">Budżet Domowy Excel</h4>
+          <p class="mb-4">Prosty arkusz z automatycznymi obliczeniami. Miesięczny i roczny widok.</p>
+          <span class="font-semibold block mb-4">29 zł</span>
+          <a href="#" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Kup teraz</a>
+        </div>
+
+        <!-- Produkt 3 -->
+        <div class="border p-6 rounded-2xl shadow-sm bg-white">
+          <h4 class="text-xl font-bold mb-2">Zestaw Planerów</h4>
+          <p class="mb-4">5 plików PDF: zadania, zakupy, tydzień, sprzątanie, notatki. Pakiet!</p>
+          <span class="font-semibold block mb-4">39 zł</span>
+          <a href="#" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Kup teraz</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog i kontakt -->
+  <section id="blog" class="bg-gray-50 py-20">
+    <div class="max-w-4xl mx-auto text-center px-4">
+      <h3 class="text-2xl font-bold mb-4">Zajrzyj na bloga</h3>
+      <p class="mb-6">Dowiedz się jak lepiej planować, oszczędzać i organizować codzienność.</p>
+      <a href="#" class="text-green-700 font-semibold hover:underline">Przejdź do bloga</a>
+    </div>
+  </section>
+
+  <section id="kontakt" class="py-20">
+    <div class="max-w-3xl mx-auto text-center px-4">
+      <h3 class="text-2xl font-bold mb-4">Masz pytania?</h3>
+      <p class="mb-6">Napisz do nas na kontakt@zorganizowani.pl lub przez formularz kontaktowy.</p>
+      <a href="#" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">Skontaktuj się</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white text-center py-6">
+    <p>&copy; 2025 Zorganizowani.pl. Wszelkie prawa zastrzeżone.</p>
+  </footer>
+
+</body>
+</html>
