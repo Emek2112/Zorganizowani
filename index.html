@@ -43,35 +43,49 @@
 </head>
 <body class="font-sans">
   <header class="glass text-center max-w-4xl mx-auto mt-6">
-    <h1 class="text-4xl font-extrabold mb-2">Zorganizowani 🚀</h1>
+    <h1 class="text-4xl font-extrabold mb-2">ZORGANIZOWANI 🚀</h1>
     <p class="text-blue-300">Twoje centrum planowania życia i finansów</p>
   </header>
 
   <main class="p-6 max-w-4xl mx-auto">
     <!-- Sekcja Ikon/Tematów -->
     <section class="glass grid grid-cols-1 md:grid-cols-3 gap-6 text-center mb-12">
-      <div>
+      <a href="#kreator" class="block">
         <img src="https://img.icons8.com/ios-filled/100/ffffff/eating.png" alt="posiłki" class="mx-auto mb-2">
         <h3 class="text-xl font-bold">Kreator Jadłospisu</h3>
         <p>Twórz własne plany posiłków i korzystaj z sugestii AI.</p>
-      </div>
-      <div>
+      </a>
+      <a href="#budzet" class="block">
         <img src="https://img.icons8.com/ios-filled/100/ffffff/money.png" alt="budżet" class="mx-auto mb-2">
         <h3 class="text-xl font-bold">Budżet Domowy</h3>
         <p>Zarządzaj wydatkami i analizuj finanse w czasie rzeczywistym.</p>
-      </div>
-      <div>
+      </a>
+      <a href="#pliki" class="block">
         <img src="https://img.icons8.com/ios-filled/100/ffffff/download.png" alt="pobieranie" class="mx-auto mb-2">
         <h3 class="text-xl font-bold">Pliki PDF & Excel</h3>
         <p>Pobierz gotowe narzędzia do druku i edycji.</p>
-      </div>
+      </a>
     </section>
 
-    <!-- Pozostałe sekcje (jadłospis, budżet, pliki) zostają bez zmian -->
-    <!-- ... (kod z sekcją jadłospisu, budżetu i plików do pobrania) ... -->
-  </main>
+    <!-- Sekcje docelowe -->
+    <section id="kreator" class="glass mb-12">
+      <h2 class="text-2xl font-bold mb-4">🧠 Kreator Jadłospisu z AI</h2>
+      <p>Wpisz posiłek lub użyj przycisku, by AI wygenerowało przykładowy jadłospis. Funkcja bazuje na bazie danych kalorii i losowych propozycjach.</p>
+    </section>
 
-  <!-- Skrypty: pozostają bez zmian -->
-  <!-- ... -->
+    <section id="budzet" class="glass mb-12">
+      <h2 class="text-2xl font-bold mb-4">📊 Budżet Domowy</h2>
+      <p>Dodawaj swoje wydatki i przychody, zobacz wykres udziału, i analizuj swoje finanse lokalnie (zapis w localStorage).</p>
+    </section>
+
+    <section id="pliki" class="glass mb-12">
+      <h2 class="text-2xl font-bold mb-4">📁 Pliki PDF & Excel do Pobrania</h2>
+      <ul class="list-disc list-inside">
+        <li><a href="downloads/planer-posilkow-pusta.pdf" download>Planer posiłków – wersja pusta</a></li>
+        <li><a href="downloads/planer-posilkow-przykladowy.pdf" download>Planer posiłków – przykładowy</a></li>
+        <li><a href="downloads/budzet-domowy.xlsx" download>Budżet domowy (Excel)</a></li>
+      </ul>
+    </section>
+  </main>
 </body>
 </html>
