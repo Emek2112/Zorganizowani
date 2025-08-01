@@ -6,6 +6,7 @@
   <title>Zorganizowani – Planowanie i Budżet</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
   <style>
     body {
       background: radial-gradient(circle at 20% 20%, #121827, #0a0f1e);
@@ -29,14 +30,6 @@
       margin: 2rem 0;
       color: #93c5fd;
     }
-    .grid-icons img {
-      width: 48px;
-      height: 48px;
-      margin-bottom: 0.5rem;
-    }
-    .section {
-      margin-bottom: 2rem;
-    }
     input, select, button {
       color: black;
     }
@@ -56,9 +49,10 @@
   <h1>ZORGANIZOWANI</h1>
 
   <main class="max-w-5xl mx-auto p-6">
-    <!-- Ikony i Sekcje Główne -->
+
+    <!-- Ikony -->
     <section class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center mb-12">
-      <a href="kreator.html" class="glass block hover:scale-105 transition-transform">
+      <a href="#jadlospis" class="glass block hover:scale-105 transition-transform">
         <img src="https://img.icons8.com/fluency/96/meal.png" alt="Kreator" class="mx-auto">
         <h2 class="text-lg font-bold mt-2">Kreator jadłospisów</h2>
         <p>AI tematyczne sugestie posiłków i cennik kalorii</p>
@@ -75,13 +69,23 @@
       </a>
     </section>
 
-    <!-- OFERTY PREMIUM -->
+    <!-- KREATOR -->
+    <section id="jadlospis" class="section text-center">
+      <h2 class="text-2xl font-bold text-blue-300 mb-6">🍽️ Kreator Jadłospisu AI</h2>
+
+      <div class="flex flex-col md:flex-row justify-center items-center gap-4 mb-4">
+        <button id="generate" class="dark-btn">Generuj jadłospis</button>
+        <button id="downloadBtn" class="dark-btn hidden">📁 Pobierz jako PDF</button>
+      </div>
+
+      <div id="output" class="grid grid-cols-1 sm:grid-cols-2 gap-6"></div>
+    </section>
+
+    <!-- PREMIUM -->
     <section class="section text-center">
       <h2 class="text-2xl font-bold text-blue-300 mb-6">💎 Oferty Premium</h2>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-        <!-- Pakiet PDF -->
         <div class="glass">
           <h3 class="text-xl font-semibold mb-2">📦 Pakiet Zorganizowanego Człowieka</h3>
           <ul class="text-sm text-left mb-4 list-disc list-inside">
@@ -89,11 +93,10 @@
             <li>Arkusz budżetowy z kalkulatorem</li>
             <li>Checklisty zakupowe, harmonogramy</li>
           </ul>
-          <p class="text-lg mb-2">Cena: <strong>19 zł</strong></p>
+          <p class="text-lg mb-2">Cena: <strong>22zł</strong></p>
           <button class="dark-btn w-full">Kup teraz</button>
         </div>
 
-        <!-- Kreator PRO -->
         <div class="glass">
           <h3 class="text-xl font-semibold mb-2">🔐 Kreator PRO (AI)</h3>
           <ul class="text-sm text-left mb-4 list-disc list-inside">
@@ -101,12 +104,11 @@
             <li>Lista zakupów i wartości odżywcze</li>
             <li>Wersja darmowa: tylko 1 dzień</li>
           </ul>
-          <p class="text-sm mb-1">14 dni – <strong>9 zł</strong></p>
-          <p class="text-sm mb-2">30 dni – <strong>19 zł</strong></p>
+          <p class="text-sm mb-1">14 dni – <strong>12 zł</strong></p>
+          <p class="text-sm mb-2">30 dni – <strong>22zł</strong></p>
           <button class="dark-btn w-full">Wykup dostęp</button>
         </div>
 
-        <!-- Newsletter -->
         <div class="glass">
           <h3 class="text-xl font-semibold mb-2">📧 Zorganizowany Tydzień</h3>
           <ul class="text-sm text-left mb-4 list-disc list-inside">
@@ -114,12 +116,99 @@
             <li>PDF + budżet + listy zakupów</li>
             <li>Dostarczany na maila</li>
           </ul>
-          <p class="text-lg mb-2">Subskrypcja: <strong>9 zł/miesiąc</strong></p>
+          <p class="text-lg mb-2">Subskrypcja: <strong>12 zł/miesiąc</strong></p>
           <button class="dark-btn w-full">Zapisz się</button>
         </div>
-
       </div>
     </section>
   </main>
+
+  <script>
+    const meals = [
+      {
+        name: "Owsianka z jabłkiem",
+        calories: 320,
+        theme: "śniadanie",
+        instructions: [
+          "Zagotuj 200ml mleka.",
+          "Dodaj 5 łyżek płatków owsianych.",
+          "Gotuj 5 minut mieszając.",
+          "Dodaj starte jabłko i cynamon."
+        ]
+      },
+      {
+        name: "Kurczak curry z ryżem",
+        calories: 580,
+        theme: "obiad (indyjska)",
+        instructions: [
+          "Pokrój kurczaka, obsmaż z cebulą.",
+          "Dodaj pastę curry i mleczko kokosowe.",
+          "Gotuj 15 minut, podaj z ryżem."
+        ]
+      },
+      {
+        name: "Spaghetti z sosem pomidorowym",
+        calories: 530,
+        theme: "obiad (włoska)",
+        instructions: [
+          "Ugotuj makaron al dente.",
+          "Podsmaż czosnek, dodaj pomidory i przyprawy.",
+          "Gotuj 15 minut, dodaj parmezan."
+        ]
+      },
+      {
+        name: "Sałatka z ciecierzycy",
+        calories: 420,
+        theme: "kolacja (wege)",
+        instructions: [
+          "Wymieszaj ciecierzycę z warzywami.",
+          "Dodaj sok z cytryny i natkę pietruszki."
+        ]
+      },
+      {
+        name: "Łosoś pieczony z warzywami",
+        calories: 490,
+        theme: "fit obiad",
+        instructions: [
+          "Łososia skrop cytryną i posyp ziołami.",
+          "Piecz 20 minut w 180°C z warzywami."
+        ]
+      }
+    ];
+
+    document.getElementById("generate").addEventListener("click", () => {
+      const output = document.getElementById("output");
+      output.innerHTML = "";
+
+      meals.forEach(meal => {
+        const box = document.createElement("div");
+        box.className = "glass text-left";
+
+        box.innerHTML = `
+          <h2 class="text-lg font-bold text-blue-200 mb-1">${meal.name}</h2>
+          <p class="text-sm mb-1"><strong>Temat:</strong> ${meal.theme}</p>
+          <p class="text-sm mb-2"><strong>Kalorie:</strong> ${meal.calories} kcal</p>
+          <p class="text-sm font-semibold mb-1">Przygotowanie:</p>
+          <ul class="list-disc list-inside text-sm text-blue-100 space-y-1">
+            ${meal.instructions.map(step => `<li>${step}</li>`).join('')}
+          </ul>
+        `;
+        output.appendChild(box);
+      });
+
+      document.getElementById("downloadBtn").classList.remove("hidden");
+    });
+
+    document.getElementById("downloadBtn").addEventListener("click", () => {
+      const element = document.getElementById("output");
+      html2pdf().set({
+        margin: 10,
+        filename: 'jadlospis.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      }).from(element).save();
+    });
+  </script>
 </body>
 </html>
