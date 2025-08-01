@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jadłospis PRO + Lista Zakupów</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background: radial-gradient(circle at 20% 20%, #121827, #0a0f1e);
+      color: #e0e7ff;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 2rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      width: 100%;
+      max-width: 600px;
+    }
+    .btn {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      padding: 0.7rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+    .btn:hover {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    }
+    ul { list-style: disc; padding-left: 1.25rem; margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+  <h1 class="text-3xl font-bold mb-6 text-indigo-300">Jadłospis PRO + Lista Zakupów</h1>
+
+  <div id="content"></div>
+
+  <button id="buyPro" class="btn mt-6">Kup dostęp PRO (30 dni za 19 zł)</button>
+
+  <script>
+    const PRO_DAYS = 30;
+
+    const menu = [
+      { day: 1, meals: ["Jajka", "Chleb", "Masło"], shopping: ["6 jaj", "1 bochenek chleba", "masło"] },
+      { day: 2, meals: ["Owsianka", "Mleko", "Banan"], shopping: ["Płatki owsiane", "mleko 1L", "2 banany"] },
+      { day: 3, meals: ["Makaron", "Sos pomidorowy", "Ser"], shopping: ["Makaron 500g", "sos 1 butelka", "ser 200g"] },
+    ];
+
+    const content = document.getElementById('content');
+    const btn = document.getElementById('buyPro');
+
+    function isProValid() {
+      const data = JSON.parse(localStorage.getItem('proData'));
+      if (!data) return false;
+      const now = new Date();
+      return now < new Date(data.expiry);
+    }
+
+    function renderContent() {
+      content.innerHTML = '';
+      if (isProValid()) {
+        menu.forEach(day => {
+          const div = document.createElement('div');
+          div.className = 'card';
+          div.innerHTML = `
+            <h2 class="text-xl font-bold text-indigo-200">Dzień ${day.day}</h2>
+            <p class="mt-2 font-semibold">Posiłki:</p>
+            <ul>${day.meals.map(m => `<li>${m}</li>`).join('')}</ul>
+            <p class="mt-2 font-semibold">Lista zakupów:</p>
+            <ul>${day.shopping.map(i => `<li>${i}</li>`).join('')}</ul>
+          `;
+          content.appendChild(div);
+        });
+        btn.textContent = 'Dostęp aktywny ✓';
+        btn.disabled = true;
+        btn.classList.add('opacity-50', 'cursor-not-allowed');
+      } else {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `
+          <p class="text-lg text-red-400">Tylko jeden dzień widoczny. Aby zobaczyć więcej, wykup dostęp PRO.</p>
+          <h2 class="text-xl font-bold text-indigo-200 mt-4">Dzień ${menu[0].day}</h2>
+          <ul>${menu[0].meals.map(m => `<li>${m}</li>`).join('')}</ul>
+          <p class="mt-2 font-semibold">Lista zakupów:</p>
+          <ul>${menu[0].shopping.map(i => `<li>${i}</li>`).join('')}</ul>
+        `;
+        content.appendChild(div);
+      }
+    }
+
+    btn.onclick = () => {
+      const now = new Date();
+      const expiry = new Date();
+      expiry.setDate(now.getDate() + PRO_DAYS);
+      localStorage.setItem('proData', JSON.stringify({ expiry }));
+      renderContent();
+    };
+
+    renderContent();
+  </script>
+</body>
+</html>
