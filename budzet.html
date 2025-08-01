@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analiza Budżetu – Zorganizowani</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: radial-gradient(circle at 20% 20%, #1f2937, #111827);
+      color: #e0e7ff;
+      font-family: 'Segoe UI', sans-serif;
+    }
+  </style>
+</head>
+<body class="p-6">
+  <h1 class="text-3xl font-bold text-center mb-8">💰 Analiza Budżetu</h1>
+
+  <div class="max-w-2xl mx-auto bg-white bg-opacity-5 backdrop-blur-md rounded-xl p-6 shadow-lg space-y-4">
+    <form id="budgetForm" class="grid grid-cols-1 gap-4">
+      <input type="text" id="category" placeholder="Kategoria (np. jedzenie)" class="p-2 rounded text-black">
+      <input type="number" id="amount" placeholder="Kwota" class="p-2 rounded text-black">
+      <button type="submit" class="bg-green-600 hover:bg-green-800 text-white px-4 py-2 rounded">Dodaj</button>
+    </form>
+
+    <div>
+      <h2 class="text-xl font-semibold mt-4 mb-2">📊 Wydatki:</h2>
+      <ul id="expenses" class="list-disc pl-6 space-y-1"></ul>
+    </div>
+  </div>
+
+  <script>
+    const expenses = [];
+    document.getElementById("budgetForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const category = document.getElementById("category").value;
+      const amount = parseFloat(document.getElementById("amount").value);
+      if (category && amount) {
+        expenses.push({ category, amount });
+        renderExpenses();
+      }
+    });
+
+    function renderExpenses() {
+      const list = document.getElementById("expenses");
+      list.innerHTML = expenses.map(e => `<li>${e.category}: ${e.amount} zł</li>`).join('');
+    }
+  </script>
+</body>
+</html>
