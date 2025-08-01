@@ -1,171 +1,141 @@
 <!DOCTYPE html>
-<html lang="pl" class="scroll-smooth">
+<html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kreator Jadłospisów PRO – Zorganizowani</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kreator Jadłospisu AI</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
     body {
       background: radial-gradient(circle at 20% 20%, #121827, #0a0f1e);
       color: #e0e7ff;
       font-family: 'Segoe UI', sans-serif;
-      margin: 0;
       padding: 2rem;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2.5rem;
-      color: #93c5fd;
-      margin-bottom: 1.5rem;
       text-align: center;
     }
     .card {
-      background: rgba(255, 255, 255, 0.07);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 1rem;
-      padding: 1.5rem 2rem;
-      margin-bottom: 1.5rem;
-      width: 100%;
-      max-width: 500px;
-      box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
-      transition: transform 0.3s ease;
+      padding: 2rem;
+      margin: 1rem auto;
+      max-width: 600px;
+      text-align: left;
     }
-    .card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 25px rgba(99, 102, 241, 0.5);
-    }
-    .btn-primary {
+    .btn {
       background: linear-gradient(135deg, #6366f1, #8b5cf6);
       color: white;
-      padding: 0.7rem 1.5rem;
+      padding: 0.8rem 2rem;
       border-radius: 0.5rem;
       font-weight: 600;
-      text-align: center;
-      cursor: pointer;
-      user-select: none;
-      transition: background 0.3s ease;
       margin-top: 1rem;
-      display: inline-block;
     }
-    .btn-primary:hover {
+    .btn:hover {
       background: linear-gradient(135deg, #4f46e5, #7c3aed);
     }
-    .locked-text {
-      color: #f87171;
-      font-weight: 700;
-      margin-top: 0.75rem;
-      text-align: center;
-      font-size: 1.05rem;
-      letter-spacing: 0.03em;
-    }
-    ul {
-      list-style-type: disc;
-      padding-left: 1.2rem;
-      margin-top: 0.5rem;
-    }
-    footer {
-      margin-top: auto;
-      color: #7c3aed;
-      font-style: italic;
-      font-size: 0.9rem;
-      text-align: center;
-      padding: 1rem 0;
+    .premium {
+      color: #facc15;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
+  <h1 class="text-3xl font-bold text-indigo-300 mb-6">🤖 Kreator Jadłospisu AI</h1>
+  <button class="btn" onclick="generateMeal()">Wygeneruj jadłospis</button>
 
-  <h1>Kreator Jadłospisów PRO</h1>
-
-  <div id="jadlospis-container" class="w-full max-w-xl"></div>
-
-  <button id="buy-pro-btn" class="btn-primary">Kup wersję PRO (14 dni za 9 zł)</button>
-
-  <footer>© 2025 Zorganizowani</footer>
+  <div id="mealCard" class="card hidden"></div>
 
   <script>
-    // Jadłospis - przykładowe dane na 7 dni
-    const jadlospis = [
-      { day: 1, meals: ["Śniadanie: Owsianka z owocami", "Obiad: Kurczak z warzywami", "Kolacja: Sałatka grecka"] },
-      { day: 2, meals: ["Śniadanie: Jajecznica na maśle", "Obiad: Ryba pieczona z ziemniakami", "Kolacja: Kanapki z awokado"] },
-      { day: 3, meals: ["Śniadanie: Smoothie z bananem", "Obiad: Makaron z sosem pomidorowym", "Kolacja: Zupa krem z dyni"] },
-      { day: 4, meals: ["Śniadanie: Jogurt naturalny z miodem", "Obiad: Gulasz wołowy", "Kolacja: Sałatka z tuńczykiem"] },
-      { day: 5, meals: ["Śniadanie: Omlet z warzywami", "Obiad: Pierogi ruskie", "Kolacja: Warzywa na parze"] },
-      { day: 6, meals: ["Śniadanie: Kanapki z serem", "Obiad: Kurczak curry z ryżem", "Kolacja: Zupa krem z brokułów"] },
-      { day: 7, meals: ["Śniadanie: Placuszki z jabłkami", "Obiad: Sałatka z kurczakiem", "Kolacja: Jajka faszerowane"] },
+    const recipes = [
+      {
+        title: "Spaghetti Bolognese (Włochy)",
+        ingredients: [
+          "200g makaronu spaghetti",
+          "100g mięsa mielonego",
+          "1/2 cebuli",
+          "1 ząbek czosnku",
+          "150ml sosu pomidorowego",
+          "1 łyżka oliwy",
+          "sól, pieprz, bazylia"
+        ],
+        kcal: 580,
+        instructions: [
+          "Ugotuj makaron al dente w osolonej wodzie.",
+          "Na oliwie podsmaż cebulę i czosnek, dodaj mięso i smaż 7 minut.",
+          "Dodaj sos pomidorowy, przyprawy i duś 10 minut.",
+          "Wymieszaj z makaronem i podawaj posypane bazylią."
+        ]
+      },
+      {
+        title: "Pad Thai (Tajlandia)",
+        ingredients: [
+          "100g makaronu ryżowego",
+          "1 jajko",
+          "50g tofu lub kurczaka",
+          "30g kiełków fasoli",
+          "1 łyżka sosu sojowego",
+          "sok z limonki",
+          "orzeszki ziemne"
+        ],
+        kcal: 520,
+        instructions: [
+          "Namocz makaron w ciepłej wodzie 10 min.",
+          "Na patelni smaż tofu/kurczaka, dodaj jajko i makaron.",
+          "Wlej sos, dodaj kiełki i wymieszaj.",
+          "Podawaj z limonką i posyp orzeszkami."
+        ]
+      },
+      {
+        title: "Zupa krem z dyni (Polska)",
+        ingredients: [
+          "300g dyni",
+          "1 marchewka",
+          "1/2 cebuli",
+          "500ml bulionu warzywnego",
+          "1 łyżka śmietany",
+          "gałka muszkatołowa, sól"
+        ],
+        kcal: 320,
+        instructions: [
+          "Podsmaż cebulę, dodaj pokrojoną dynię i marchew.",
+          "Zalej bulionem i gotuj do miękkości.",
+          "Zblenduj na gładko, dopraw i dodaj śmietanę."
+        ]
+      },
+      {
+        title: "Falafel z hummusem (Bliski Wschód)",
+        ingredients: [
+          "100g suchej ciecierzycy",
+          "1 ząbek czosnku",
+          "1 łyżka mąki",
+          "pietruszka, kmin rzymski",
+          "olej do smażenia",
+          "3 łyżki hummusu"
+        ],
+        kcal: 470,
+        instructions: [
+          "Namocz ciecierzycę przez noc.",
+          "Zmiel z przyprawami i mąką, uformuj kulki.",
+          "Smaż w głębokim oleju na złoto.",
+          "Podawaj z hummusem i warzywami."
+        ]
+      }
     ];
 
-    const PRO_DURATION_DAYS = 14; // Czas dostępu PRO w dniach
-
-    const container = document.getElementById('jadlospis-container');
-    const buyBtn = document.getElementById('buy-pro-btn');
-
-    // Sprawdza czy dostęp PRO jest aktywny (sprawdzamy datę wygaśnięcia w localStorage)
-    function isProActive() {
-      const proData = JSON.parse(localStorage.getItem('proAccess'));
-      if (!proData) return false;
-      const now = new Date();
-      const expiry = new Date(proData.expiry);
-      return now < expiry;
+    function generateMeal() {
+      const recipe = recipes[Math.floor(Math.random() * recipes.length)];
+      const div = document.getElementById("mealCard");
+      div.classList.remove("hidden");
+      div.innerHTML = `
+        <h2 class="text-xl font-bold text-indigo-200">${recipe.title}</h2>
+        <p class="mt-2"><strong>Kaloryczność:</strong> ${recipe.kcal} kcal</p>
+        <p class="mt-2 font-semibold">Składniki:</p>
+        <ul class="list-disc list-inside">${recipe.ingredients.map(i => `<li>${i}</li>`).join('')}</ul>
+        <p class="mt-4 font-semibold">Instrukcja przygotowania:</p>
+        <ol class="list-decimal list-inside">${recipe.instructions.map(s => `<li>${s}</li>`).join('')}</ol>
+        <p class="mt-4 text-sm italic premium">Pełna wersja z dodatkowymi przepisami i opcją eksportu do PDF dostępna w wersji PRO.</p>
+      `;
     }
-
-    // Renderuje jadłospis na podstawie statusu PRO
-    function renderJadlospis() {
-      container.innerHTML = '';
-      if (isProActive()) {
-        jadlospis.forEach(day => {
-          const card = document.createElement('div');
-          card.classList.add('card');
-          card.innerHTML = `
-            <h2 class="text-xl font-semibold mb-2 text-indigo-300">Dzień ${day.day}</h2>
-            <ul>${day.meals.map(meal => `<li>${meal}</li>`).join('')}</ul>
-          `;
-          container.appendChild(card);
-        });
-        buyBtn.textContent = "Masz aktywną wersję PRO! Dziękujemy 🎉";
-        buyBtn.disabled = true;
-        buyBtn.classList.add('opacity-50', 'cursor-not-allowed');
-      } else {
-        // Darmowa wersja - pokazujemy 1 dzień + informacja o wersji PRO
-        const day = jadlospis[0];
-        const card = document.createElement('div');
-        card.classList.add('card');
-        card.innerHTML = `
-          <h2 class="text-xl font-semibold mb-2 text-indigo-300">Dzień ${day.day}</h2>
-          <ul>${day.meals.map(meal => `<li>${meal}</li>`).join('')}</ul>
-          <p class="locked-text">Więcej dni dostępnych tylko w wersji PRO!</p>
-        `;
-        container.appendChild(card);
-
-        buyBtn.textContent = "Kup wersję PRO (14 dni za 9 zł)";
-        buyBtn.disabled = false;
-        buyBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-      }
-    }
-
-    buyBtn.addEventListener('click', () => {
-      // Tu będzie integracja z płatnościami
-      // Na razie symulujemy zakup PRO i zapisujemy datę wygaśnięcia
-
-      const now = new Date();
-      const expiryDate = new Date(now);
-      expiryDate.setDate(now.getDate() + PRO_DURATION_DAYS);
-
-      localStorage.setItem('proAccess', JSON.stringify({ expiry: expiryDate.toISOString() }));
-
-      alert('Dziękujemy za zakup wersji PRO! Masz dostęp przez 14 dni.');
-      renderJadlospis();
-    });
-
-    // Ładowanie jadłospisu przy starcie
-    renderJadlospis();
   </script>
 </body>
 </html>
