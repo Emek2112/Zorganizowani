@@ -1,4 +1,4 @@
-planer-posilkow-pusta.pdf
-planer-posilkow-przykladowy.pdf
-budzet-domowy.xlsx
-
+├── planer-posilkow-pusta.pdf           ← pusty szablon planera posiłków
+├── planer-posilkow-przykladowy.pdf     ← przykładowy, wypełniony planer posiłków
+├── budzet-domowy.xlsx                  ← szablon budżetu domowego (Excel)
+└── zestaw-zorganizowanych.pdf          ← zestaw plików do druku (np. notatniki, checklisty)
