@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Twój Jadłospis + Lista Zakupów</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif; background: #121827; color: #e0e7ff; padding: 2rem;
+      max-width: 700px; margin: auto;
+    }
+    label, select, input, button {
+      font-size: 1rem; margin: 0.5rem 0; padding: 0.4rem; border-radius: 5px;
+    }
+    button {
+      background: #7c3aed; color: white; border: none; cursor: pointer;
+    }
+    button:disabled {
+      background: gray; cursor: not-allowed;
+    }
+    .plan {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+    h2 {
+      color: #a78bfa;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Twój Jadłospis + Lista Zakupów</h1>
+
+  <form id="prefsForm">
+    <label for="goal">Wybierz cel:</label><br />
+    <select id="goal" required>
+      <option value="">-- Wybierz --</option>
+      <option value="schudnac">Schudnąć</option>
+      <option value="utrzymac">Utrzymać wagę</option>
+      <option value="przytyc">Przytyć</option>
+    </select><br />
+
+    <label for="diet">Preferencje dietetyczne:</label><br />
+    <select id="diet" required>
+      <option value="">-- Wybierz --</option>
+      <option value="normalna">Normalna</option>
+      <option value="wege">Wegetariańska</option>
+      <option value="keto">Keto</option>
+      <option value="wegańska">Wegańska</option>
+    </select><br />
+
+    <button type="submit">Generuj Jadłospis (darmowy 1 dzień)</button>
+  </form>
+
+  <div id="planOutput" class="plan hidden">
+    <h2>Twój Jadłospis na dzień 1</h2>
+    <div id="meals"></div>
+    <button id="buyWeek">Wykup plan na 7 dni – 9 zł</button>
+    <button id="buyMonth">Wykup plan na 30 dni – 19 zł</button>
+    <button id="downloadPdf" class="hidden">Pobierz PDF z jadłospisem</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    const form = document.getElementById('prefsForm');
+    const output = document.getElementById('planOutput');
+    const mealsDiv = document.getElementById('meals');
+    const buyWeek = document.getElementById('buyWeek');
+    const buyMonth = document.getElementById('buyMonth');
+    const downloadPdfBtn = document.getElementById('downloadPdf');
+
+    // Prosty przykładowy jadłospis (możesz rozszerzyć)
+    const sampleMeals = {
+      normalna: [
+        { meal: "Śniadanie", dish: "Jajecznica na maśle", calories: 300, ingredients: "3 jajka, masło, sól", instructions: "Usmaż jajka na maśle, przypraw." },
+        { meal: "Obiad", dish: "Pierś z kurczaka z ryżem", calories: 600, ingredients: "200g kurczaka, 100g ryżu, warzywa", instructions: "Ugotuj ryż, usmaż kurczaka, podaj z warzywami." },
+        { meal: "Kolacja", dish: "Kanapki z serem", calories: 400, ingredients: "Chleb, ser, masło", instructions: "Przygotuj kanapki z serem i masłem." },
+      ],
+      wege: [
+        { meal: "Śniadanie", dish: "Owsianka z owocami", calories: 350, ingredients: "Płatki owsiane, mleko, owoce", instructions: "Zagotuj mleko, dodaj płatki i owoce." },
+        { meal: "Obiad", dish: "Sałatka z ciecierzycą", calories: 550, ingredients: "Ciecierzyca, pomidor, ogórek, oliwa", instructions: "Wymieszaj składniki i skrop oliwą." },
+        { meal: "Kolacja", dish: "Kanapki z hummusem", calories: 400, ingredients: "Chleb, hummus, warzywa", instructions: "Posmaruj chleb hummusem, dodaj warzywa." },
+      ],
+      keto: [
+        { meal: "Śniadanie", dish: "Jajka sadzone z awokado", calories: 450, ingredients: "2 jajka, awokado, masło", instructions: "Usmaż jajka, podaj z plasterkami awokado." },
+        { meal: "Obiad", dish: "Sałatka z tuńczykiem i majonezem", calories: 650, ingredients: "Tuńczyk, sałata, majonez, oliwa", instructions: "Wymieszaj składniki." },
+        { meal: "Kolacja", dish: "Ser pleśniowy z orzechami", calories: 500, ingredients: "Ser pleśniowy, orzechy", instructions: "Podawaj ser z orzechami." },
+      ],
+      wegańska: [
+        { meal: "Śniadanie", dish: "Smoothie z bananem i szpinakiem", calories: 300, ingredients: "Banan, szpinak, mleko roślinne", instructions: "Zmiksuj wszystkie składniki." },
+        { meal: "Obiad", dish: "Stir-fry z tofu i warzywami", calories: 600, ingredients: "Tofu, brokuły, papryka, sos sojowy", instructions: "Podsmaż tofu i warzywa, dodaj sos." },
+        { meal: "Kolacja", dish: "Sałatka z quinoa i awokado", calories: 400, ingredients: "Quinoa, awokado, pomidor", instructions: "Wymieszaj składniki." },
+      ],
+    };
+
+    // Przechowuj wykupione plany w localStorage
+    function setPlanValidity(days) {
+      const now = new Date();
+      const expiry = new Date(now.getTime() + days * 24*60*60*1000);
+      localStorage.setItem('planExpiry', expiry.toISOString());
+    }
+
+    function isPlanValid() {
+      const expiry = localStorage.getItem('planExpiry');
+      if (!expiry) return false;
+      return new Date() > new Date(expiry) ? false : true;
+    }
+
+    function displayMeals(diet) {
+      mealsDiv.innerHTML = '';
+      sampleMeals[diet].forEach(m => {
+        mealsDiv.innerHTML += `
+          <h3>${m.meal}: ${m.dish} (${m.calories} kcal)</h3>
+          <p><b>Składniki:</b> ${m.ingredients}</p>
+          <p><b>Instrukcje:</b> ${m.instructions}</p>
+          <hr />
+        `;
+      });
+      output.classList.remove('hidden');
+      downloadPdfBtn.classList.toggle('hidden', !isPlanValid());
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      if (!isPlanValid()) {
+        alert("Masz darmowy dostęp do 1 dnia. Aby zobaczyć cały tydzień, wykup plan.");
+      }
+      const diet = document.getElementById('diet').value;
+      displayMeals(diet);
+    });
+
+    buyWeek.onclick = () => {
+      setPlanValidity(7);
+      alert("Wykupiono plan na 7 dni! Możesz teraz pobrać PDF.");
+      downloadPdfBtn.classList.remove('hidden');
+    };
+
+    buyMonth.onclick = () => {
+      setPlanValidity(30);
+      alert("Wykupiono plan na 30 dni! Możesz teraz pobrać PDF.");
+      downloadPdfBtn.classList.remove('hidden');
+    };
+
+    downloadPdfBtn.onclick = () => {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      doc.setFontSize(18);
+      doc.text("Twój Jadłospis i Lista Zakupów", 10, 15);
+
+      const diet = document.getElementById('diet').value;
+      let y = 25;
+      sampleMeals[diet].forEach(m => {
+        doc.setFontSize(14);
+        doc.text(`${m.meal}: ${m.dish} (${m.calories} kcal)`, 10, y);
+        y += 8;
+        doc.setFontSize(11);
+        doc.text(`Składniki: ${m.ingredients}`, 12, y);
+        y += 7;
+        doc.text(`Instrukcje: ${m.instructions}`, 12, y);
+        y += 12;
+      });
+
+      doc.save("jadlospis.pdf");
+    };
+  </script>
+
+</body>
+</html>
