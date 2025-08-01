@@ -2,43 +2,49 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kreator Jadłospisów – Zorganizowani</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
     body {
-      background: radial-gradient(circle at 20% 20%, #1a1f2e, #0a0f1e);
+      background: #0f172a;
       color: #e0e7ff;
       font-family: 'Segoe UI', sans-serif;
+      padding: 2rem;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      padding: 2rem;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+    }
+    input, textarea, select {
+      color: black;
     }
   </style>
 </head>
-<body class="p-6">
-  <h1 class="text-3xl font-bold text-center mb-8">🍽 Kreator Jadłospisu</h1>
+<body>
+  <h1 class="text-3xl mb-6">🥗 Kreator jadłospisów AI</h1>
 
-  <div class="max-w-2xl mx-auto bg-white bg-opacity-5 backdrop-blur-md rounded-xl p-6 shadow-lg space-y-4">
-    <p>Skorzystaj z kreatora jadłospisów AI, by otrzymać propozycje posiłków dopasowane do Twoich preferencji.</p>
-
-    <form id="mealForm" class="space-y-4">
-      <input type="text" placeholder="Twoje preferencje (np. wege, keto, szybkie obiady)" class="w-full p-2 rounded text-black" />
-      <button type="submit" class="bg-indigo-600 hover:bg-indigo-800 text-white px-4 py-2 rounded">Wygeneruj jadłospis</button>
-    </form>
-
-    <div id="result" class="mt-4"></div>
+  <div class="glass">
+    <p>Wprowadź swoje preferencje, a AI zasugeruje ci posiłki.</p>
+    <label>Preferencje żywieniowe:
+      <select>
+        <option>Bez preferencji</option>
+        <option>Wegetariańska</option>
+        <option>Wysokobiałkowa</option>
+        <option>Niskowęglowodanowa</option>
+      </select>
+    </label>
+    <label>Dzienna liczba kalorii:
+      <input type="number" placeholder="np. 2000" />
+    </label>
+    <button class="mt-4 bg-indigo-500 px-4 py-2 rounded text-white">🎯 Generuj jadłospis</button>
   </div>
 
-  <script>
-    document.getElementById("mealForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const result = document.getElementById("result");
-      result.innerHTML = `
-        <h2 class="text-xl mt-4 mb-2 font-semibold">Przykładowy jadłospis AI:</h2>
-        <ul class="list-disc pl-6 space-y-1">
-          <li>🍳 Śniadanie: Jajka sadzone z awokado i pomidorem</li>
-          <li>🥗 Obiad: Sałatka z ciecierzycy i hummusem</li>
-          <li>🍝 Kolacja: Makaron pełnoziarnisty z sosem pomidorowym</li>
-        </ul>`;
-    });
-  </script>
+  <a href="index.html" class="mt-6 inline-block text-blue-300 underline">← Wróć do strony głównej</a>
 </body>
 </html>
