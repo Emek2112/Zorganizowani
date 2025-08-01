@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Budżet – Zorganizowani</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
@@ -17,37 +17,72 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 1rem;
       padding: 2rem;
+      margin-bottom: 2rem;
     }
-    input {
+    input, select {
       color: black;
+      padding: 0.5rem;
+      border-radius: 0.3rem;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .total-display {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #93c5fd;
     }
   </style>
 </head>
 <body>
-  <h1 class="text-3xl mb-6">💰 Analiza budżetu</h1>
+  <h1 class="text-3xl mb-6">🛒 Budżet spożywczy tygodnia</h1>
 
-  <div class="glass mb-6">
-    <form id="expense-form">
-      <label>Kategoria: <input type="text" id="category" required></label>
-      <label>Kwota: <input type="number" id="amount" required></label>
-      <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded mt-2">Dodaj wydatek</button>
+  <div class="glass">
+    <form id="food-form">
+      <label>Produkt spożywczy:
+        <select id="food-item" required>
+          <option value="">– wybierz –</option>
+          <option value="Jajka">Jajka – 6 zł</option>
+          <option value="Chleb">Chleb – 4 zł</option>
+          <option value="Masło">Masło – 7 zł</option>
+          <option value="Owsianka">Płatki owsiane – 5 zł</option>
+          <option value="Mleko">Mleko – 4 zł</option>
+          <option value="Banan">Banan – 3 zł</option>
+          <option value="Makaron">Makaron – 6 zł</option>
+          <option value="Sos">Sos pomidorowy – 5 zł</option>
+          <option value="Ser">Ser – 7 zł</option>
+        </select>
+      </label><br />
+      <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Dodaj do budżetu</button>
     </form>
   </div>
 
   <div class="glass">
     <canvas id="budgetChart" height="120"></canvas>
+    <p class="mt-4 total-display" id="total">Łączny koszt tygodnia: 0 zł</p>
   </div>
 
   <a href="index.html" class="mt-6 inline-block text-blue-300 underline">← Wróć do strony głównej</a>
 
   <script>
+    const priceMap = {
+      "Jajka": 6,
+      "Chleb": 4,
+      "Masło": 7,
+      "Owsianka": 5,
+      "Mleko": 4,
+      "Banan": 3,
+      "Makaron": 6,
+      "Sos": 5,
+      "Ser": 7
+    };
+
     const ctx = document.getElementById('budgetChart').getContext('2d');
     const data = {
       labels: [],
       datasets: [{
-        label: 'Wydatki',
+        label: 'Koszty',
         data: [],
-        backgroundColor: ['#f87171', '#60a5fa', '#34d399', '#fbbf24', '#a78bfa'],
+        backgroundColor: ['#60a5fa', '#34d399', '#f87171', '#fbbf24', '#a78bfa']
       }]
     };
     const chart = new Chart(ctx, {
@@ -55,20 +90,20 @@
       data,
       options: {
         responsive: true,
-        plugins: {
-          legend: { display: false }
-        }
+        plugins: { legend: { display: false } }
       }
     });
 
-    document.getElementById('expense-form').addEventListener('submit', e => {
+    let total = 0;
+    document.getElementById('food-form').addEventListener('submit', e => {
       e.preventDefault();
-      const category = document.getElementById('category').value;
-      const amount = parseFloat(document.getElementById('amount').value);
-      if (category && !isNaN(amount)) {
-        data.labels.push(category);
-        data.datasets[0].data.push(amount);
+      const item = document.getElementById('food-item').value;
+      if (item && priceMap[item]) {
+        data.labels.push(item);
+        data.datasets[0].data.push(priceMap[item]);
+        total += priceMap[item];
         chart.update();
+        document.getElementById('total').textContent = `Łączny koszt tygodnia: ${total} zł`;
       }
       e.target.reset();
     });
