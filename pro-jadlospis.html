@@ -39,6 +39,12 @@
       background: linear-gradient(135deg, #4f46e5, #7c3aed);
     }
     ul { list-style: disc; padding-left: 1.25rem; margin-top: 0.5rem; }
+    .instructions {
+      margin-top: 1rem;
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 1rem;
+      border-radius: 0.5rem;
+    }
   </style>
 </head>
 <body>
@@ -52,9 +58,33 @@
     const PRO_DAYS = 30;
 
     const menu = [
-      { day: 1, meals: ["Jajka", "Chleb", "Masło"], shopping: ["6 jaj", "1 bochenek chleba", "masło"] },
-      { day: 2, meals: ["Owsianka", "Mleko", "Banan"], shopping: ["Płatki owsiane", "mleko 1L", "2 banany"] },
-      { day: 3, meals: ["Makaron", "Sos pomidorowy", "Ser"], shopping: ["Makaron 500g", "sos 1 butelka", "ser 200g"] },
+      {
+        day: 1,
+        meals: ["Jajka", "Chleb", "Masło"],
+        shopping: ["6 jaj", "1 bochenek chleba", "masło"],
+        instructions: [
+          "Ugotuj jajka na twardo przez 8–10 minut.",
+          "Podaj z masłem na kromkach chleba."
+        ]
+      },
+      {
+        day: 2,
+        meals: ["Owsianka", "Mleko", "Banan"],
+        shopping: ["Płatki owsiane", "mleko 1L", "2 banany"],
+        instructions: [
+          "Zagotuj mleko i dodaj płatki owsiane.",
+          "Gotuj 5 minut mieszając, dodaj pokrojonego banana."
+        ]
+      },
+      {
+        day: 3,
+        meals: ["Makaron", "Sos pomidorowy", "Ser"],
+        shopping: ["Makaron 500g", "sos 1 butelka", "ser 200g"],
+        instructions: [
+          "Ugotuj makaron zgodnie z instrukcją na opakowaniu.",
+          "Podgrzej sos, wymieszaj z makaronem, posyp tartym serem."
+        ]
+      },
     ];
 
     const content = document.getElementById('content');
@@ -79,6 +109,10 @@
             <ul>${day.meals.map(m => `<li>${m}</li>`).join('')}</ul>
             <p class="mt-2 font-semibold">Lista zakupów:</p>
             <ul>${day.shopping.map(i => `<li>${i}</li>`).join('')}</ul>
+            <div class="instructions">
+              <p class="font-semibold text-sm">Jak przygotować:</p>
+              <ul>${day.instructions.map(step => `<li>${step}</li>`).join('')}</ul>
+            </div>
           `;
           content.appendChild(div);
         });
@@ -94,6 +128,10 @@
           <ul>${menu[0].meals.map(m => `<li>${m}</li>`).join('')}</ul>
           <p class="mt-2 font-semibold">Lista zakupów:</p>
           <ul>${menu[0].shopping.map(i => `<li>${i}</li>`).join('')}</ul>
+          <div class="instructions">
+            <p class="font-semibold text-sm">Jak przygotować:</p>
+            <ul>${menu[0].instructions.map(step => `<li>${step}</li>`).join('')}</ul>
+          </div>
         `;
         content.appendChild(div);
       }
