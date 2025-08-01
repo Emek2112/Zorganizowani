@@ -1,35 +1,45 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
   <title>Pliki do pobrania – Zorganizowani</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
     body {
-      background: radial-gradient(circle at 20% 20%, #1e293b, #0f172a);
+      background: #0f172a;
       color: #e0e7ff;
       font-family: 'Segoe UI', sans-serif;
+      padding: 2rem;
+    }
+    .link-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    a {
+      color: #60a5fa;
+      font-weight: bold;
     }
   </style>
 </head>
-<body class="p-6">
-  <h1 class="text-3xl font-bold text-center mb-8">📁 Pliki do Pobrania</h1>
+<body>
+  <h1 class="text-3xl mb-6">📂 Pliki do pobrania</h1>
 
-  <div class="max-w-xl mx-auto grid gap-6 bg-white bg-opacity-5 backdrop-blur-md p-6 rounded-xl shadow">
-    <div>
-      <h2 class="text-xl font-semibold">📅 Planer Posiłków</h2>
-      <a href="downloads/planer-posilkow-pusta.pdf" class="underline text-blue-300 block mt-1">Pusta wersja (PDF)</a>
-      <a href="downloads/planer-posilkow-przykladowy.pdf" class="underline text-blue-300 block">Przykładowa wersja (PDF)</a>
-    </div>
-    <div>
-      <h2 class="text-xl font-semibold">💰 Budżet Domowy</h2>
-      <a href="downloads/budzet-domowy.xlsx" class="underline text-blue-300 block mt-1">Szablon Excel</a>
-    </div>
-    <div>
-      <h2 class="text-xl font-semibold">✅ Zestaw Zorganizowanych</h2>
-      <a href="downloads/zestaw-zorganizowanych.pdf" class="underline text-blue-300 block mt-1">Planery (PDF)</a>
-    </div>
+  <div class="link-box">
+    <p>📥 <a href="downloads/planer-posilkow-pusta.pdf" download>Planer Posiłków – wersja pusta (PDF)</a></p>
   </div>
+  <div class="link-box">
+    <p>📥 <a href="downloads/planer-posilkow-przykladowy.pdf" download>Planer Posiłków – wersja przykładowa (PDF)</a></p>
+  </div>
+  <div class="link-box">
+    <p>📊 <a href="downloads/budzet-domowy.xlsx" download>Budżet Domowy (Excel)</a></p>
+  </div>
+  <div class="link-box">
+    <p>📦 <a href="downloads/zestaw-zorganizowanych.pdf" download>Zestaw zorganizowanych (PDF)</a></p>
+  </div>
+
+  <a href="index.html" class="mt-4 inline-block text-sm underline text-blue-300">← Wróć do strony głównej</a>
 </body>
 </html>
