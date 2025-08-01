@@ -123,92 +123,140 @@
     </section>
   </main>
 
-  <script>
-    const meals = [
-      {
-        name: "Owsianka z jabłkiem",
-        calories: 320,
-        theme: "śniadanie",
-        instructions: [
-          "Zagotuj 200ml mleka.",
-          "Dodaj 5 łyżek płatków owsianych.",
-          "Gotuj 5 minut mieszając.",
-          "Dodaj starte jabłko i cynamon."
-        ]
-      },
-      {
-        name: "Kurczak curry z ryżem",
-        calories: 580,
-        theme: "obiad (indyjska)",
-        instructions: [
-          "Pokrój kurczaka, obsmaż z cebulą.",
-          "Dodaj pastę curry i mleczko kokosowe.",
-          "Gotuj 15 minut, podaj z ryżem."
-        ]
-      },
-      {
-        name: "Spaghetti z sosem pomidorowym",
-        calories: 530,
-        theme: "obiad (włoska)",
-        instructions: [
-          "Ugotuj makaron al dente.",
-          "Podsmaż czosnek, dodaj pomidory i przyprawy.",
-          "Gotuj 15 minut, dodaj parmezan."
-        ]
-      },
-      {
-        name: "Sałatka z ciecierzycy",
-        calories: 420,
-        theme: "kolacja (wege)",
-        instructions: [
-          "Wymieszaj ciecierzycę z warzywami.",
-          "Dodaj sok z cytryny i natkę pietruszki."
-        ]
-      },
-      {
-        name: "Łosoś pieczony z warzywami",
-        calories: 490,
-        theme: "fit obiad",
-        instructions: [
-          "Łososia skrop cytryną i posyp ziołami.",
-          "Piecz 20 minut w 180°C z warzywami."
-        ]
-      }
-    ];
+ <script>
+  const meals = [
+    {
+      name: "Owsianka z jabłkiem",
+      calories: 320,
+      theme: "śniadanie",
+      instructions: [
+        "Zagotuj 200ml mleka.",
+        "Dodaj 5 łyżek płatków owsianych.",
+        "Gotuj 5 minut mieszając.",
+        "Dodaj starte jabłko i cynamon."
+      ]
+    },
+    {
+      name: "Kurczak curry z ryżem",
+      calories: 580,
+      theme: "obiad (indyjska)",
+      instructions: [
+        "Pokrój kurczaka, obsmaż z cebulą.",
+        "Dodaj pastę curry i mleczko kokosowe.",
+        "Gotuj 15 minut, podaj z ryżem."
+      ]
+    },
+    {
+      name: "Spaghetti z sosem pomidorowym",
+      calories: 530,
+      theme: "obiad (włoska)",
+      instructions: [
+        "Ugotuj makaron al dente.",
+        "Podsmaż czosnek, dodaj pomidory i przyprawy.",
+        "Gotuj 15 minut, dodaj parmezan."
+      ]
+    },
+    {
+      name: "Sałatka z ciecierzycy",
+      calories: 420,
+      theme: "kolacja (wege)",
+      instructions: [
+        "Wymieszaj ciecierzycę z warzywami.",
+        "Dodaj sok z cytryny i natkę pietruszki."
+      ]
+    },
+    {
+      name: "Łosoś pieczony z warzywami",
+      calories: 490,
+      theme: "fit obiad",
+      instructions: [
+        "Łososia skrop cytryną i posyp ziołami.",
+        "Piecz 20 minut w 180°C z warzywami."
+      ]
+    },
+    {
+      name: "Tofu stir-fry z warzywami",
+      calories: 460,
+      theme: "wege (azjatycka)",
+      instructions: [
+        "Pokrój tofu w kostkę i podsmaż.",
+        "Dodaj warzywa, sos sojowy i smaż 5 minut.",
+        "Podaj z ryżem jaśminowym."
+      ]
+    },
+    {
+      name: "Quesadilla z kurczakiem",
+      calories: 550,
+      theme: "obiad (meksykańska)",
+      instructions: [
+        "Podsmaż kurczaka z przyprawami.",
+        "Dodaj ser i zawijaj w tortillę.",
+        "Podsmaż na złoto z obu stron."
+      ]
+    },
+    {
+      name: "Zupa krem z dyni",
+      calories: 300,
+      theme: "lekka kolacja",
+      instructions: [
+        "Pokrój dynię i cebulę, podsmaż.",
+        "Zalej bulionem, gotuj do miękkości.",
+        "Zblenduj i dopraw imbirem."
+      ]
+    }
+  ];
 
-    document.getElementById("generate").addEventListener("click", () => {
-      const output = document.getElementById("output");
-      output.innerHTML = "";
+  function getRandomMeals(count = 4) {
+    const shuffled = meals.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  }
 
-      meals.forEach(meal => {
-        const box = document.createElement("div");
-        box.className = "glass text-left";
+  document.getElementById("generate").addEventListener("click", () => {
+    const output = document.getElementById("output");
+    output.innerHTML = "";
+    const selected = getRandomMeals();
 
-        box.innerHTML = `
-          <h2 class="text-lg font-bold text-blue-200 mb-1">${meal.name}</h2>
-          <p class="text-sm mb-1"><strong>Temat:</strong> ${meal.theme}</p>
-          <p class="text-sm mb-2"><strong>Kalorie:</strong> ${meal.calories} kcal</p>
-          <p class="text-sm font-semibold mb-1">Przygotowanie:</p>
-          <ul class="list-disc list-inside text-sm text-blue-100 space-y-1">
-            ${meal.instructions.map(step => `<li>${step}</li>`).join('')}
+    selected.forEach((meal, index) => {
+      const box = document.createElement("div");
+      box.className = "glass text-left relative";
+
+      const stepsId = `steps-${index}`;
+      const buttonId = `unlock-${index}`;
+
+      box.innerHTML = `
+        <h2 class="text-lg font-bold text-blue-200 mb-1">${meal.name}</h2>
+        <p class="text-sm mb-1"><strong>Temat:</strong> ${meal.theme}</p>
+        <p class="text-sm mb-3"><strong>Kalorie:</strong> ${meal.calories} kcal</p>
+        <div id="${stepsId}" class="text-sm text-blue-100 hidden">
+          <p class="font-semibold mb-1">Przygotowanie:</p>
+          <ul class="list-disc list-inside mb-2">
+            ${meal.instructions.map(step => `<li>${step}</li>`).join("")}
           </ul>
-        `;
-        output.appendChild(box);
+        </div>
+        <button id="${buttonId}" class="dark-btn mt-2">🔒 Odsłoń instrukcję (2 zł)</button>
+      `;
+
+      output.appendChild(box);
+
+      document.getElementById(buttonId).addEventListener("click", () => {
+        document.getElementById(stepsId).classList.remove("hidden");
+        document.getElementById(buttonId).remove();
       });
-
-      document.getElementById("downloadBtn").classList.remove("hidden");
     });
 
-    document.getElementById("downloadBtn").addEventListener("click", () => {
-      const element = document.getElementById("output");
-      html2pdf().set({
-        margin: 10,
-        filename: 'jadlospis.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      }).from(element).save();
-    });
-  </script>
+    document.getElementById("downloadBtn").classList.remove("hidden");
+  });
+
+  document.getElementById("downloadBtn").addEventListener("click", () => {
+    const element = document.getElementById("output");
+    html2pdf().set({
+      margin: 10,
+      filename: 'jadlospis.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    }).from(element).save();
+  });
+</script>
 </body>
 </html>
